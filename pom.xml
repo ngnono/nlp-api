@@ -22,6 +22,7 @@
         <org.ansj.version>5.0.1</org.ansj.version>
         <com.fasterxml.version>2.6.4</com.fasterxml.version>
         <log4j.version>1.2.17</log4j.version>
+        <nlp-lang.version>1.6</nlp-lang.version>
     </properties>
 
     <profiles>
@@ -58,6 +59,12 @@
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
             <version>${org.ansj.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nlpcn</groupId>
+            <artifactId>nlp-lang</artifactId>
+            <version>${nlp-lang.version}</version>
         </dependency>
 
         <!-- spring -->

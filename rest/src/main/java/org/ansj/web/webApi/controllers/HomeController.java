@@ -17,16 +17,11 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/home")
-public class HomeController {
+public class HomeController extends BaseController {
 
     @RequestMapping(value = "/a", method = RequestMethod.GET)
     public ResponseData index(HttpServletRequest request, HttpServletResponse response) {
-        ResponseData data = new ResponseData();
 
-        String orderPkIdStr = StringUtils.trimToEmpty(request.getParameter("id"));
-
-        data.setData(orderPkIdStr);
-
-        return data;
+        return OkResponse("hello world!!!!");
     }
 }

@@ -3,15 +3,18 @@ package org.ansj.web.common.models;
 /**
  * Created by lianghongpeng on 2016/8/25.
  */
-public class ResponseData extends BaseResponseData<Object>{
+public class ResponseData implements java.io.Serializable {
     //状态码,
     private int code = 200;
 
+    /**
+     * 状态 200～299 都是 true 其余 false
+     */
+    private boolean status = true;
+
     private String msg = "";
 
-    private Object data = "";
-
-    public ResponseData(){
+    public ResponseData() {
     }
 
     public int getCode() {
@@ -20,6 +23,11 @@ public class ResponseData extends BaseResponseData<Object>{
 
     public void setCode(int code) {
         this.code = code;
+        if (code >= 200 && code < 300) {
+            this.setStatus(true);
+        } else {
+            this.setStatus(false);
+        }
     }
 
     public String getMsg() {
@@ -30,12 +38,12 @@ public class ResponseData extends BaseResponseData<Object>{
         this.msg = msg;
     }
 
-    public Object getData() {
-        return data;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }
 

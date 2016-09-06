@@ -65,10 +65,22 @@ public class NLPController extends BaseController {
                 switch (f) {
                     case "removeHtmlTag":
                         content = StringUtil.rmHtmlTag(content);
+                        break;
                 }
             }
 
-        Result rst = NlpAnalysis.parse(content);
+        String analyzer = requestModel.getAnalyzer();
+
+
+        Result rst = null;
+        switch (analyzer) {
+
+            case "nlp":
+            default:
+                rst = NlpAnalysis.parse(content);
+                break;
+        }
+
 
         /**
          * { word:[],newWord:[],tfs: }

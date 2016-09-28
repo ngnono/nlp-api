@@ -12,7 +12,7 @@
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="org.ansj.web.common.web.interceptor.RequestLogInterceptor"/>
+            <bean class="com.awb.web.common.web.interceptor.RequestLogInterceptor"/>
         </mvc:interceptor>
 
     </mvc:interceptors>

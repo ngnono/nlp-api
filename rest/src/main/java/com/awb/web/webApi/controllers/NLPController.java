@@ -1,6 +1,8 @@
 package com.awb.web.webApi.controllers;
 
 import com.awb.web.common.TfIdf;
+import com.awb.web.common.utils.CollectionUtils;
+import com.awb.web.common.utils.StringUtils;
 import com.awb.web.webApi.models.ParticipleModel;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.*;
 
 /**
@@ -38,8 +41,6 @@ public class NLPController extends BaseController {
         if (requestModel == null) {
             return ErrorParamsResponse("参数为空");
         }
-
-
 
         String content = requestModel.getContent();
 
@@ -72,6 +73,40 @@ public class NLPController extends BaseController {
                 break;
         }
 
+        // 分词后过滤
+        List<String> filtered = requestModel.getFiltered();
+        //标点过滤
+        //只有 词性时根据词性 过滤
+        if (filtered != null) {
+            List<Term> dr = new ArrayList<>();
+
+            for (Term t : rst) {
+                boolean isFilterd = false;
+
+                for (String f : filtered) {
+                    switch (f) {
+                        case "termNatures-w":
+                            if (StringUtil.isNotBlank(t.getNatureStr()) && t.getNatureStr().startsWith("w")) {
+                                isFilterd = true;
+                            }
+
+                            break;
+                        case "termNatures-null":
+                            if (StringUtil.isBlank(t.getNatureStr())) {
+                                isFilterd = true;
+                            }
+                            break;
+                    }
+                }
+
+                if (!isFilterd) {
+                    dr.add(t);
+                }
+            }
+
+            rst = new Result(dr);
+        }
+
         Collection<String> documents = new ArrayList<>();
         Map<String, ParticipleModel> dict = new HashMap<>();
 
@@ -95,12 +130,15 @@ public class NLPController extends BaseController {
         }
 
         List<String> resultPlus = requestModel.getResultPlus();
+        boolean hasTf = false;
+        //分词结果 过滤
         if (resultPlus != null) {
             Map<String, Double> tf = null;
 
             for (String p : resultPlus) {
                 switch (p) {
                     case "tf":
+                        hasTf = true;
                         tf = TfIdf.tf(documents);
                         break;
                 }
@@ -117,20 +155,44 @@ public class NLPController extends BaseController {
             }
         }
 
-        StdResponseData<Collection<ParticipleModel>> data = new StdResponseData<>();
+        StdResponseData<ArrayList<ParticipleModel>> data = new StdResponseData<>();
 
         /**
          * {
          *     status:true,code:200,data:{[{name:"",},]}
          * }
-         *
-         *
-         *
          */
 
-        Collection<ParticipleModel> c =  dict.values();
+        Collection<ParticipleModel> cls = dict.values();
 
-        data.setData(c);
+        ArrayList<ParticipleModel> list = CollectionUtils.toArray(cls);
+
+        /**
+         * order and top , skip
+         */
+
+        if (requestModel.getOrderBy() != null && hasTf) {
+            //asc
+            switch (requestModel.getOrderBy()) {
+                case 1: //tf asc
+                    Collections.sort(list, (l, r)
+                            -> l.getTf() - r.getTf());
+                    break;
+                case 2://tf desc
+                    Collections.sort(list, (l, r)
+                            -> r.getTf() - l.getTf());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (requestModel.getTake() != null) {
+            list = CollectionUtils.take(list, requestModel.getTake());
+        }
+
+        data.setCode(200);
+        data.setData(list);
 
         return data;
     }

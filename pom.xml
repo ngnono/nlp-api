@@ -144,6 +144,13 @@
             <version>2.5</version>
         </dependency>
 
+        <!--test-->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.13.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>

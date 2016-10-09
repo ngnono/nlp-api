@@ -33,6 +33,8 @@ public class ParticipleRequest {
      *  分词前 过滤器
      *
      *  1.htmlTagFilter
+     *  2.标准化
+     *
      *
      *
      */
@@ -77,4 +79,46 @@ public class ParticipleRequest {
 
      */
     private List<String> resultPlus;
+
+    public Integer getTake() {
+        return take;
+    }
+
+    public void setTake(Integer take) {
+        this.take = take;
+    }
+
+    /**
+     * 取的返回结果数，默认是所有
+     */
+    private Integer take;
+
+    public Integer getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(Integer orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    /**
+     * 排序方式
+     * 0 ，null := 默认
+     * 1 ，tf desc := 当附加TF时 可用，否则为默认，  根据TF 倒序排列
+     * 2 ，tf asc  := 当附加TF时 可用，否则为默认，  根据TF 正序排列
+     */
+    private Integer orderBy;
+
+    public Integer getSkip() {
+        return skip;
+    }
+
+    public void setSkip(Integer skip) {
+        this.skip = skip;
+    }
+
+    /**
+     * 跳过的记录数 默认为0
+     */
+    private Integer skip;
 }

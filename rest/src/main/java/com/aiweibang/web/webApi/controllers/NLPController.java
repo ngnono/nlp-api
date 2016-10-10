@@ -27,6 +27,37 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/nlp")
 public class NLPController extends BaseController {
+
+
+    /**
+     * 过滤 无用的 TERM
+     *
+     * @param filtered
+     * @param t
+     * @return
+     */
+    private static boolean Filtered(List<String> filtered, Term t) {
+        boolean isFilterd = false;
+
+        for (String f : filtered) {
+            switch (f) {
+                case "termNatures-w":
+                    if (StringUtil.isNotBlank(t.getNatureStr()) && t.getNatureStr().startsWith("w")) {
+                        isFilterd = true;
+                    }
+
+                    break;
+                case "termNatures-null":
+                    if (StringUtil.isBlank(t.getNatureStr())) {
+                        isFilterd = true;
+                    }
+                    break;
+            }
+        }
+
+        return isFilterd;
+    }
+
     /**
      * 分词
      *
@@ -74,42 +105,23 @@ public class NLPController extends BaseController {
 
         // 分词后过滤
         List<String> filtered = requestModel.getFiltered();
-        //标点过滤
-        //只有 词性时根据词性 过滤
-        if (filtered != null) {
-            List<Term> dr = new ArrayList<>();
-
-            for (Term t : rst) {
-                boolean isFilterd = false;
-
-                for (String f : filtered) {
-                    switch (f) {
-                        case "termNatures-w":
-                            if (StringUtil.isNotBlank(t.getNatureStr()) && t.getNatureStr().startsWith("w")) {
-                                isFilterd = true;
-                            }
-
-                            break;
-                        case "termNatures-null":
-                            if (StringUtil.isBlank(t.getNatureStr())) {
-                                isFilterd = true;
-                            }
-                            break;
-                    }
-                }
-
-                if (!isFilterd) {
-                    dr.add(t);
-                }
-            }
-
-            rst = new Result(dr);
-        }
-
+        // 是否TF
+        Boolean hasTf = requestModel.getHasTf();
         Collection<String> documents = new ArrayList<>();
         Map<String, ParticipleModel> dict = new HashMap<>();
 
         for (Term t : rst) {
+
+            //标点过滤
+            //只有 词性时根据词性 过滤
+            boolean isFilterd = false;
+            if (filtered != null) {
+                isFilterd = Filtered(filtered, t);
+            }
+
+            if (isFilterd) {
+                continue;
+            }
 
             String n = t.getName();
             //filter
@@ -117,7 +129,10 @@ public class NLPController extends BaseController {
                 continue;
             }
 
-            documents.add(t.getName());
+            if (hasTf != null && hasTf) {
+                documents.add(t.getName());
+            }
+
             ParticipleModel pm = new ParticipleModel();
             pm.setName(t.getName());
             pm.setIsNewWord(t.isNewWord());
@@ -128,29 +143,16 @@ public class NLPController extends BaseController {
             dict.put(t.getName(), pm);
         }
 
-        List<String> resultPlus = requestModel.getResultPlus();
-        boolean hasTf = false;
+
         //分词结果 过滤
-        if (resultPlus != null) {
-            Map<String, Double> tf = null;
+        if (hasTf != null && hasTf) {
+            Map<String, Double> tf = TfIdf.tf(documents);
 
-            for (String p : resultPlus) {
-                switch (p) {
-                    case "tf":
-                        hasTf = true;
-                        tf = TfIdf.tf(documents);
-                        break;
-                }
-            }
+            for (String key : dict.keySet()) {
 
-            if (tf != null) {
+                Double tfValue = tf.getOrDefault(key, 0d);
 
-                for (String key : dict.keySet()) {
-
-                    Double tfValue = tf.getOrDefault(key, 0d);
-
-                    dict.get(key).setTf(tfValue.intValue());
-                }
+                dict.get(key).setTf(tfValue.intValue());
             }
         }
 
@@ -170,7 +172,7 @@ public class NLPController extends BaseController {
          * order and top , skip
          */
 
-        if (requestModel.getOrderBy() != null && hasTf) {
+        if (requestModel.getOrderBy() != null && hasTf != null && hasTf) {
             //asc
             switch (requestModel.getOrderBy()) {
                 case 1: //tf asc

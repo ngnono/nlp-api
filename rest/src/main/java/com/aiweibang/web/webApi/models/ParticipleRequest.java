@@ -66,19 +66,19 @@ public class ParticipleRequest {
      */
     private String analyzer;
 
-    public List<String> getResultPlus() {
-        return resultPlus;
-    }
-
-    public void setResultPlus(List<String> resultPlus) {
-        this.resultPlus = resultPlus;
-    }
-
-    /**
-     * 分词结果附加功能
-
-     */
-    private List<String> resultPlus;
+//    public List<String> getResultPlus() {
+//        return resultPlus;
+//    }
+//
+//    public void setResultPlus(List<String> resultPlus) {
+//        this.resultPlus = resultPlus;
+//    }
+//
+//    /**
+//     * 分词结果附加功能
+//
+//     */
+//    private List<String> resultPlus;
 
     public Integer getTake() {
         return take;
@@ -104,8 +104,8 @@ public class ParticipleRequest {
     /**
      * 排序方式
      * 0 ，null := 默认
-     * 1 ，tf desc := 当附加TF时 可用，否则为默认，  根据TF 倒序排列
-     * 2 ，tf asc  := 当附加TF时 可用，否则为默认，  根据TF 正序排列
+     * 2 ，tf desc := 当附加TF时 可用，否则为默认，  根据TF 倒序排列
+     * 1 ，tf asc  := 当附加TF时 可用，否则为默认，  根据TF 正序排列
      */
     private Integer orderBy;
 
@@ -121,4 +121,18 @@ public class ParticipleRequest {
      * 跳过的记录数 默认为0
      */
     private Integer skip;
+
+
+    public Boolean getHasTf() {
+        return hasTf;
+    }
+
+    public void setHasTf(Boolean hasTf) {
+        this.hasTf = hasTf;
+    }
+
+    /**
+     * 是否进行 TF计算
+     */
+    private Boolean hasTf;
 }

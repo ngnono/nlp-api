@@ -15,7 +15,7 @@
     </modules>
 
     <properties>
-        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.version> 4.2.5.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <package.environment>dev</package.environment>
         <org.ansj.version>5.0.1</org.ansj.version>
@@ -103,6 +103,7 @@
         </dependency>
 
 
+
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -140,16 +141,20 @@
 
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
         </dependency>
+
+
 
         <!--test-->
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.9.13.6</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 

@@ -1,9 +1,12 @@
 package com.awb.web.common.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class StdResponseData<T> extends ResponseData {
     /**
      * 数据
      */
+    @JsonProperty("data")
     private T data;
 
     public StdResponseData() {

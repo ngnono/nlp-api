@@ -25,7 +25,7 @@ public class HomeController extends BaseController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseData index(HttpServletRequest request, HttpServletResponse response) {
         StdResponseData<Object> data = new StdResponseData<>();
         data.setCode(200);

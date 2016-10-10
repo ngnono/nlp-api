@@ -72,9 +72,8 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                <!-- 配置文件名 -->
-                /WEB-INF/rest-servlet.xml,
-                /WEB-INF/interceptor-servlet.xml
+                classpath*:/spring/rest-servlet.xml,
+                classpath*:/spring/interceptor-servlet.xml
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>

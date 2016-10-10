@@ -178,26 +178,26 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.5</version>
-            </plugin>
-            <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-jgitflow-plugin</artifactId>
-                <version>1.0-alpha26</version>
-                <configuration>
-                    <enableSshAgent>true</enableSshAgent>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <pushFeatures>false</pushFeatures>
-                    <pushReleases>false</pushReleases>
-                    <pushHotfixes>false</pushHotfixes>
-                    <flowInitContext>
-                        <versionTagPrefix>rev-</versionTagPrefix>
-                    </flowInitContext>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>build-helper-maven-plugin</artifactId>-->
+                <!--<version>1.5</version>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+                <!--<groupId>com.atlassian.maven.plugins</groupId>-->
+                <!--<artifactId>maven-jgitflow-plugin</artifactId>-->
+                <!--<version>1.0-alpha26</version>-->
+                <!--<configuration>-->
+                    <!--<enableSshAgent>true</enableSshAgent>-->
+                    <!--<autoVersionSubmodules>true</autoVersionSubmodules>-->
+                    <!--<pushFeatures>false</pushFeatures>-->
+                    <!--<pushReleases>false</pushReleases>-->
+                    <!--<pushHotfixes>false</pushHotfixes>-->
+                    <!--<flowInitContext>-->
+                        <!--<versionTagPrefix>rev-</versionTagPrefix>-->
+                    <!--</flowInitContext>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
